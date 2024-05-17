@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.olisaude.testedevback.dto.ClientDTO;
 import com.olisaude.testedevback.model.ClientModel;
 import com.olisaude.testedevback.service.ClientService;
 
@@ -25,14 +26,17 @@ public class ClientController {
   @Autowired
   ClientService clientService;
 
+  @Autowired
+  ClientDTO clientDTO;
+
   @PostMapping
   public ClientModel register(@Valid @RequestBody ClientModel clientModel) {
     return clientService.create(clientModel);
   }
 
   @GetMapping 
-  public List<ClientModel> listAllClients() {
-    return clientService.findAll();
+  public ResponseEntity<List<ClientDTO>> listAllCLients() throws Exception {
+    return ResponseEntity.ok(clientService.findAll());
   }
 
   @GetMapping(path = "/{id}")
