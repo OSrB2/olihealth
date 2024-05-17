@@ -1,11 +1,14 @@
 package com.olisaude.testedevback.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.olisaude.testedevback.dto.ClientDTO;
+import com.olisaude.testedevback.mapper.ClientMapper;
 import com.olisaude.testedevback.model.ClientModel;
 import com.olisaude.testedevback.repository.ClientRepository;
 
@@ -14,12 +17,26 @@ public class ClientService {
   @Autowired
   ClientRepository clientRepository;
 
+  @Autowired
+  private ClientMapper clientMapper;
+
   public ClientModel create (ClientModel clientModel) {
     return clientRepository.save(clientModel);
   }
 
-  public List<ClientModel> findAll() {
-    return clientRepository.findAll();
+  public List<ClientDTO> findAll() throws Exception {
+    List<ClientModel> clients = clientRepository.findAll();
+
+    if (clients.isEmpty()) {
+      throw new Exception("No clients found!");
+    }
+
+    List<ClientDTO> clientDTOs = new ArrayList<>();
+
+    for (ClientModel clientModel : clients) {
+      clientDTOs.add(clientMapper.toClientDTO(clientModel));
+    }
+    return clientDTOs;
   }
 
   public Optional<ClientModel> findClientById(Long id) {
