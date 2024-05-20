@@ -3,7 +3,6 @@ package com.olisaude.testedevback.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.olisaude.testedevback.dto.ClientDTO;
 import com.olisaude.testedevback.mapper.ClientMapper;
 import com.olisaude.testedevback.model.ClientModel;
-import com.olisaude.testedevback.model.HealthProblemModel;
 import com.olisaude.testedevback.repository.ClientRepository;
 
 @Service
@@ -83,19 +81,5 @@ public class ClientService {
       throw new Exception("Id not found");
     }
     clientRepository.deleteById(id);
-  }
-
-  public List<ClientModel> findTopClientsByHealthRisk() {
-    List<ClientModel> allClients = clientRepository.findAll();
-    return allClients.stream()
-          .map(client -> {
-            double sd = client.getHealthProblem().stream().mapToInt(HealthProblemModel::getLevel).sum();
-            double score = (1 / 1 + Math.exp(-(-2.8 + sd))) * 100;
-            client.setHealthRiskScore(score);
-            return client;
-    })
-    .sorted((c1, c2) -> Double.compare(c2.getHealthRiskScore(), c1.getHealthRiskScore()))
-    .limit(10)
-    .collect(Collectors.toList());
   }
 }
