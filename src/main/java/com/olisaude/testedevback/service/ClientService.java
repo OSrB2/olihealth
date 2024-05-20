@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.olisaude.testedevback.dto.ClientDTO;
 import com.olisaude.testedevback.exceptions.HandleIDNotFound;
 import com.olisaude.testedevback.exceptions.HandleNoHasClients;
+import com.olisaude.testedevback.exceptions.Validations;
 import com.olisaude.testedevback.mapper.ClientMapper;
 import com.olisaude.testedevback.model.ClientModel;
 import com.olisaude.testedevback.model.HealthProblemModel;
@@ -24,8 +25,40 @@ public class ClientService {
   @Autowired
   private ClientMapper clientMapper;
 
+  @Autowired
+  Validations validation;
+
   public ClientModel create (ClientModel clientModel) {
-    return clientRepository.save(clientModel);
+    ClientModel newClient = new ClientModel();
+    
+    if (validation.isNameValid(clientModel.getName()) && 
+    validation.isNameCount(clientModel.getName())) {
+      newClient.setName(clientModel.getName());
+    }
+
+
+    if (validation.isLastNameValid(clientModel.getLastName()) &&
+    validation.isLastNameCount(clientModel.getLastName())) {
+      newClient.setLastName(clientModel.getLastName());
+    }
+
+
+    if (validation.isBirthDateValid(clientModel.getBirthDate()) &&
+    validation.isBirthDateValidPrevious(clientModel.getBirthDate())) {
+      newClient.setBirthDate(clientModel.getBirthDate());
+    }
+
+    if (validation.isGenderValid(clientModel.getGender()) && 
+    validation.isGenderOptionValid(clientModel.getGender().toLowerCase())) {
+      newClient.setGender(clientModel.getGender().toLowerCase());
+    }
+
+    if (validation.isHealthProblemValid(clientModel.getHealthProblem())) {
+      newClient.setHealthProblem(clientModel.getHealthProblem());
+    }
+
+
+    return clientRepository.save(newClient);
   }
 
   public List<ClientDTO> findAll() {
