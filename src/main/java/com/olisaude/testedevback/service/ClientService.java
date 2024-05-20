@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.olisaude.testedevback.dto.ClientDTO;
+import com.olisaude.testedevback.exceptions.HandleIDNotFound;
+import com.olisaude.testedevback.exceptions.HandleNoHasClients;
 import com.olisaude.testedevback.mapper.ClientMapper;
 import com.olisaude.testedevback.model.ClientModel;
 import com.olisaude.testedevback.model.HealthProblemModel;
@@ -26,11 +28,11 @@ public class ClientService {
     return clientRepository.save(clientModel);
   }
 
-  public List<ClientDTO> findAll() throws Exception {
+  public List<ClientDTO> findAll() {
     List<ClientModel> clients = clientRepository.findAll();
 
     if (clients.isEmpty()) {
-      throw new Exception("No clients found!");
+      throw new HandleNoHasClients("No clients found!");
     }
 
     List<ClientDTO> clientDTOs = new ArrayList<>();
@@ -42,14 +44,20 @@ public class ClientService {
   }
 
   public Optional<ClientModel> findClientById(Long id) {
-    return clientRepository.findById(id);
-  }
-
-  public ClientModel updateClient(Long id, ClientModel clientModel) throws Exception {
     Optional<ClientModel> clientOptional = clientRepository.findById(id);
 
     if (clientOptional.isEmpty()) {
-      throw new Exception("Client not found!");
+      throw new HandleIDNotFound("Client not found!");
+    }
+
+    return clientOptional;
+  }
+
+  public ClientModel updateClient(Long id, ClientModel clientModel)  {
+    Optional<ClientModel> clientOptional = clientRepository.findById(id);
+
+    if (clientOptional.isEmpty()) {
+      throw new HandleIDNotFound("Client not found!");
     }
     
     ClientModel client = clientOptional.get();
@@ -76,11 +84,11 @@ public class ClientService {
     return clientRepository.save(client);
   }
 
-  public void deleteClient(Long id) throws Exception {
+  public void deleteClient(Long id) {
     Optional<ClientModel> clientModel = clientRepository.findById(id);
 
     if (clientModel.isEmpty()) {
-      throw new Exception("Id not found");
+      throw new HandleIDNotFound("Id not found");
     }
     clientRepository.deleteById(id);
   }
