@@ -44,7 +44,6 @@ public class ClientController {
     return clientService.findClientById(id);
   }
 
-  
  @GetMapping(path = "/top10risk")
  public ResponseEntity<List<ClientModel>> getTop10CLientsByHealthRisk() {
    List<ClientModel> topTenClients = clientService.findTopClientsByHealthRisk();
@@ -61,5 +60,4 @@ public class ClientController {
     clientService.deleteClient(id);
     return ResponseEntity.noContent().build();
   }
-
 }
