@@ -44,6 +44,12 @@ public class ClientController {
     return clientService.findClientById(id);
   }
 
+ @GetMapping(path = "/top10risk")
+ public ResponseEntity<List<ClientModel>> getTop10CLientsByHealthRisk() {
+   List<ClientModel> topTenClients = clientService.findTopClientsByHealthRisk();
+   return ResponseEntity.ok(topTenClients);
+ }
+
   @PutMapping(path = "/{id}")
   public ResponseEntity<?> updateClient(@PathVariable Long id, @RequestBody ClientModel clientModel) throws Exception {
     return ResponseEntity.ok(clientService.updateClient(id, clientModel));

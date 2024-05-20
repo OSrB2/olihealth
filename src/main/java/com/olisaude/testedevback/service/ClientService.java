@@ -82,4 +82,18 @@ public class ClientService {
     }
     clientRepository.deleteById(id);
   }
+
+  public List<ClientModel> findTopClientsByHealthRisk() {
+    List<ClientModel> allClients = clientRepository.findAll();
+    return allClients.stream()
+    .map(client -> {
+      double sd = client.getHealthProblem().stream().mapToInt(HealthProblemModel::getLevel).sum();
+      double score = Math.round(1 / (1 + Math.exp(-(-2.8 + sd)))) * 100;
+      client.setHealthRiskScore(score);
+      return client;
+    })
+    .sorted((c1, c2) -> Double.compare(c2.getHealthRiskScore(), c1.getHealthRiskScore()))
+    .limit(10)
+    .collect(Collectors.toList());
+  }
 }
