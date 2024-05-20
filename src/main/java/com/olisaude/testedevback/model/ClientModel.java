@@ -50,6 +50,9 @@ public class ClientModel {
   @JoinColumn(name = "client_id")
   private List<HealthProblemModel> healthProblem;
 
+  @Transient
+  private double healthRiskScore;
+
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "created_at", nullable = false, updatable = false)
   private Date created_At;
