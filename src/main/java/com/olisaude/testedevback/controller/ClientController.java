@@ -35,7 +35,7 @@ public class ClientController {
   }
 
   @GetMapping 
-  public ResponseEntity<List<ClientDTO>> listAllCLients() throws Exception {
+  public ResponseEntity<List<ClientDTO>> listAllCLients() {
     return ResponseEntity.ok(clientService.findAll());
   }
 
@@ -51,12 +51,12 @@ public class ClientController {
  }
 
   @PutMapping(path = "/{id}")
-  public ResponseEntity<?> updateClient(@PathVariable Long id, @RequestBody ClientModel clientModel) throws Exception {
+  public ResponseEntity<?> updateClient(@PathVariable Long id, @RequestBody ClientModel clientModel) {
     return ResponseEntity.ok(clientService.updateClient(id, clientModel));
   }
 
   @DeleteMapping(path = "/{id}")
-  public ResponseEntity delete(@PathVariable Long id) throws Exception {
+  public ResponseEntity<?> delete(@PathVariable Long id) {
     clientService.deleteClient(id);
     return ResponseEntity.noContent().build();
   }
