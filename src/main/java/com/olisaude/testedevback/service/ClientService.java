@@ -90,7 +90,7 @@ public class ClientService {
     return allClients.stream()
           .map(client -> {
             double sd = client.getHealthProblem().stream().mapToInt(HealthProblemModel::getLevel).sum();
-            double score = (1 / 1 + Math.exp(-(-2.8 + sd))) * 100;
+            double score = Math.round(1 / 1 + Math.exp(-(-2.8 + sd))) * 100;
             client.setHealthRiskScore(score);
             return client;
     })
