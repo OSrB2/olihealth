@@ -18,7 +18,7 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,6 +50,9 @@ public class ClientModel {
   @JoinColumn(name = "client_id")
   private List<HealthProblemModel> healthProblem;
 
+  @Transient
+  private double healthRiskScore;
+
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "created_at", nullable = false, updatable = false)
   private Date created_At;
@@ -58,7 +61,6 @@ public class ClientModel {
   @Column(name = "updated_at", nullable = false)
   private Date updated_At;
   
-
   @PrePersist
   protected void onCreate() {
     Date now = new Date();
