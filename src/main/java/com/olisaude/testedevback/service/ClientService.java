@@ -3,6 +3,7 @@ package com.olisaude.testedevback.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.olisaude.testedevback.dto.ClientDTO;
 import com.olisaude.testedevback.mapper.ClientMapper;
 import com.olisaude.testedevback.model.ClientModel;
+import com.olisaude.testedevback.model.HealthProblemModel;
 import com.olisaude.testedevback.repository.ClientRepository;
 
 @Service
