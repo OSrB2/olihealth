@@ -12,6 +12,7 @@ spring.jpa.generate-ddl=
 spring.jpa.hibernate.ddl-auto=
 spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=
 
+api.security.token.secret = 
 
 
 #------> H2 Config <-----
