@@ -76,17 +76,20 @@ public class ClientService {
     return clientDTOs;
   }
 
-  public Optional<ClientModel> findClientById(Long id) {
+  public Optional<ClientDTO> findClientById(Long id) {
     Optional<ClientModel> clientOptional = clientRepository.findById(id);
 
     if (clientOptional.isEmpty()) {
       throw new HandleIDNotFound("Client not found!");
     }
 
-    return clientOptional;
+    ClientModel client = clientRepository.findById(id).get();
+    ClientDTO clientDTO = clientMapper.toClientDTO(client);
+
+    return Optional.of(clientDTO);
   }
 
-  public ClientModel updateClient(Long id, ClientModel clientModel)  {
+  public ClientDTO updateClient(Long id, ClientDTO clientDTO)  {
     Optional<ClientModel> clientOptional = clientRepository.findById(id);
 
     if (clientOptional.isEmpty()) {
@@ -95,26 +98,27 @@ public class ClientService {
     
     ClientModel client = clientOptional.get();
     if (client.getName() != null) {
-      client.setName(clientModel.getName());
+      client.setName(clientDTO.getName());
     }
 
     if (client.getLastName() != null) {
-      client.setLastName(clientModel.getLastName());
+      client.setLastName(clientDTO.getLastName());
     }
 
     if (client.getBirthDate() != null) {
-      client.setBirthDate(clientModel.getBirthDate());
+      client.setBirthDate(clientDTO.getBirthDate());
     }
 
     if (client.getGender() != null) {
-      client.setGender(clientModel.getGender());
+      client.setGender(clientDTO.getGender());
     }
 
     if (client.getHealthProblem() != null) {
-      client.setHealthProblem(clientModel.getHealthProblem());
+      client.setHealthProblem(client.getHealthProblem());
     }
 
-    return clientRepository.save(client);
+    clientRepository.save(client);
+    return clientMapper.toClientDTO(client);
   }
 
   public void deleteClient(Long id) {

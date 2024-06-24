@@ -40,7 +40,7 @@ public class ClientController {
   }
 
   @GetMapping(path = "/{id}")
-  public Optional<ClientModel> findById(@PathVariable Long id) {
+  public Optional<ClientDTO> findById(@PathVariable Long id) {
     return clientService.findClientById(id);
   }
 
@@ -51,8 +51,8 @@ public class ClientController {
  }
 
   @PutMapping(path = "/{id}")
-  public ResponseEntity<?> updateClient(@PathVariable Long id, @RequestBody ClientModel clientModel) {
-    return ResponseEntity.ok(clientService.updateClient(id, clientModel));
+  public ResponseEntity<?> updateClient(@PathVariable Long id, @RequestBody ClientDTO clientDTO) {
+    return ResponseEntity.ok(clientService.updateClient(id, clientDTO));
   }
 
   @DeleteMapping(path = "/{id}")
