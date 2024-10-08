@@ -24,5 +24,4 @@ public class HealthProblemModel {
   private String name;
 
   private int level;
-  
 }
