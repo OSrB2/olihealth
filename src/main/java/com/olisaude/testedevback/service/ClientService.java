@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.olisaude.testedevback.dto.ClientDTO;
+import com.olisaude.testedevback.dto.TopRiskDTO;
 import com.olisaude.testedevback.exceptions.HandleIDNotFound;
 import com.olisaude.testedevback.exceptions.HandleNoHasClients;
 import com.olisaude.testedevback.exceptions.Validations;
 import com.olisaude.testedevback.mapper.ClientMapper;
+import com.olisaude.testedevback.mapper.TopRiskMapper;
 import com.olisaude.testedevback.model.ClientModel;
 import com.olisaude.testedevback.model.HealthProblemModel;
 import com.olisaude.testedevback.repository.ClientRepository;
@@ -26,6 +28,9 @@ public class ClientService {
   private ClientMapper clientMapper;
 
   @Autowired
+  private TopRiskMapper topRiskMapper;
+
+  @Autowired
   Validations validation;
 
   public ClientModel create (ClientModel clientModel) {
@@ -36,12 +41,10 @@ public class ClientService {
       newClient.setName(clientModel.getName());
     }
 
-
     if (validation.isLastNameValid(clientModel.getLastName()) &&
     validation.isLastNameCount(clientModel.getLastName())) {
       newClient.setLastName(clientModel.getLastName());
     }
-
 
     if (validation.isBirthDateValid(clientModel.getBirthDate()) &&
     validation.isBirthDateValidPrevious(clientModel.getBirthDate())) {
@@ -56,7 +59,6 @@ public class ClientService {
     if (validation.isHealthProblemValid(clientModel.getHealthProblem())) {
       newClient.setHealthProblem(clientModel.getHealthProblem());
     }
-
 
     return clientRepository.save(newClient);
   }
@@ -126,16 +128,19 @@ public class ClientService {
     clientRepository.deleteById(id);
   }
 
-  public List<ClientModel> findTopClientsByHealthRisk() {
+  public List<TopRiskDTO> findTopClientsByHealthRisk() {
     List<ClientModel> allClients = clientRepository.findAll();
     return allClients.stream()
-    .map(client -> {
-      double sd = client.getHealthProblem().stream().mapToInt(HealthProblemModel::getLevel).sum();
-      double score = Math.round(1 / (1 + Math.exp(-(-2.8 + sd)))) * 100;
-      client.setHealthRiskScore(score);
-      return client;
+      .map(client -> {
+        double sd = client.getHealthProblem().stream().mapToInt(HealthProblemModel::getLevel).sum();
+        double score = (1 / (1 + Math.exp(-(-2.8 + sd)))) * 100;
+        double roundedScore = Math.round(score * 10.0) / 10.0;
+        TopRiskDTO dto = topRiskMapper.toTopRiskDTO(client);
+        dto.setScore(roundedScore);
+
+        return dto;
     })
-    .sorted((c1, c2) -> Double.compare(c2.getHealthRiskScore(), c1.getHealthRiskScore()))
+    .sorted((c1, c2) -> Double.compare(c2.getScore(), c1.getScore()))
     .limit(10)
     .collect(Collectors.toList());
   }

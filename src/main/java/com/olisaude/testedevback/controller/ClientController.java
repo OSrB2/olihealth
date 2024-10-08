@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.olisaude.testedevback.dto.ClientDTO;
+import com.olisaude.testedevback.dto.TopRiskDTO;
 import com.olisaude.testedevback.model.ClientModel;
 import com.olisaude.testedevback.service.ClientService;
 
@@ -44,9 +45,9 @@ public class ClientController {
     return clientService.findClientById(id);
   }
 
- @GetMapping(path = "/top10risk")
- public ResponseEntity<List<ClientModel>> getTop10CLientsByHealthRisk() {
-   List<ClientModel> topTenClients = clientService.findTopClientsByHealthRisk();
+ @GetMapping(path = "/toprisk")
+ public ResponseEntity<List<TopRiskDTO>> getTop10CLientsByHealthRisk() {
+   List<TopRiskDTO> topTenClients = clientService.findTopClientsByHealthRisk();
    return ResponseEntity.ok(topTenClients);
  }
 
