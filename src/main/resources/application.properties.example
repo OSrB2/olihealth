@@ -1,0 +1,38 @@
+spring.application.name=teste-dev-back
+
+#-----> Docker config <-----
+spring.jpa.database=
+spring.datasource.platform=
+spring.datasource.url=
+spring.datasource.username=
+spring.datasource.password=
+
+spring.jpa.show-sql=
+spring.jpa.generate-ddl=
+spring.jpa.hibernate.ddl-auto=
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=
+
+api.security.token.secret = 
+
+
+#------> H2 Config <-----
+## DATASOURCE
+#spring.datasource.url=
+#spring.datasource.driver-class-name=
+#spring.datasource.username=
+#spring.datasource.password=
+
+## H2 Console
+#spring.h2.console.path=
+#spring.h2.console.enabled=
+
+##JPA
+#spring.jpa.database-platform=
+#spring.jpa.show-sql=
+#spring.jpa.generate-ddl=
+#spring.jpa.hibernate.ddl-auto=
+#spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=
+#spring.jpa.defer-datasource-initialization=
+
+## Enable debug logging
+#debug=
