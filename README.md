@@ -38,12 +38,12 @@ Detailed API documentation is available on Postman: [Postman API Documentation](
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/your-repository.git
+   git clone git@github.com:OSrB2/olihealth.git
    ```
 
 2. Navigate to the project directory:
    ```bash
-   cd your-repository
+   cd olihealth
    ```
 
 3. Configure the application properties (e.g., database connection details) if needed.
